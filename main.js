@@ -4,21 +4,25 @@ const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
 function renderLike() {
+  // Select all classes of like-glyph
   const heartsList = document.querySelectorAll('.like-glyph');
+  // convert node list into array
   const hearts = [...heartsList]
   
+  // loop through hearts and add individual click events to heach heart glyph
   hearts.forEach(heart => {
     heart.addEventListener('click', (e) => {
       e.preventDefault()
-      const i = hearts.indexOf(heart,0)
       mimicServerCall().then(() => {
-        if (hearts[i].textContent === EMPTY_HEART) {
-          hearts[i].textContent = FULL_HEART
-          hearts[i].classList.add('activated-heart')
+        // determine if heart is empty or full
+        if (heart.textContent === EMPTY_HEART) {
+          heart.textContent = FULL_HEART
+          // add class to like-glyph to turn red
+          heart.classList.add('activated-heart')
         }
         else {
-          hearts[i].textContent = EMPTY_HEART
-          hearts[i].classList.remove('activated-heart')
+          heart.textContent = EMPTY_HEART
+          heart.classList.remove('activated-heart')
         }
       })
       .catch(catchError)
