@@ -4,23 +4,26 @@ const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
 function renderLike() {
-  const heart = document.querySelector('.like-glyph');
-  heart.addEventListener('click', (e) => {
-    e.preventDefault()
-    mimicServerCall().then(buildResponse).catch(catchError)
+  const heartsList = document.querySelectorAll('.like-glyph');
+  const hearts = [...heartsList]
+  
+  hearts.forEach(heart => {
+    heart.addEventListener('click', (e) => {
+      e.preventDefault()
+      const i = hearts.indexOf(heart,0)
+      mimicServerCall().then(() => {
+        if (hearts[i].textContent === EMPTY_HEART) {
+          hearts[i].textContent = FULL_HEART
+          hearts[i].classList.add('activated-heart')
+        }
+        else {
+          hearts[i].textContent = EMPTY_HEART
+          hearts[i].classList.remove('activated-heart')
+        }
+      })
+      .catch(catchError)
+    })
   })
-}
-
-function buildResponse() {
-  const heart = document.querySelector('.like-glyph');
-  if (heart.textContent === EMPTY_HEART) {
-    heart.textContent = FULL_HEART
-    heart.classList.add('activated-heart')
-  }
-  else {
-    heart.textContent = EMPTY_HEART
-    heart.classList.remove('activated-heart')
-  }
 }
 
 function catchError(error) {
